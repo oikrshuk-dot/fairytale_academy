@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Книга</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            background: #1a1a1a;
+        }
+
+        .book-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            perspective: 2000px;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transform-origin: left center;
+            transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .page-front, .page-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .page-back {
+            transform: rotateY(180deg);
+        }
+
+        .page.flipped {
+            transform: rotateY(-180deg);
+        }
+
+        /* Обложка */
+        #page1 .page-front {
+            background-image: url('images/cover.jpg');
+        }
+
+        /* Страница 1 */
+        #page2 .page-front {
+            background-image: url('images/main.jpg');
+        }
+
+        #page2 .content {
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-block {
+            background-color: #FFF5EE;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .header-block {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .description-block {
+            flex: 1;
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        /* Страница 2 */
+        #page3 .page-front {
+            background-image: url('images/part1.jpg');
+        }
+
+        /* Страница 3 */
+        #page4 .page-front {
+            background-image: url('images/main.jpg');
+        }
+
+        #page4 .content {
+            position: relative;
+            z-index: 10;
+            padding: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-title {
+            background-color: #FFF5EE;
+            padding: 15px 30px;
+            margin: 20px auto;
+            border-radius: 8px;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            width: fit-content;
+        }
+
+        .character-block {
+            background-color: #FFF5EE;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            position: relative;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .character-block h3 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .character-block p {
+            font-size: 1em;
+            line-height: 1.5;
+            color: #555;
+        }
+
+        .character-image {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .character-image.left {
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .character-image.right {
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Страница 4 */
+        #page5 .page-front {
+            background-image: url('images/main.jpg');
+        }
+
+        /* Навигация */
+        .nav-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            z-index: 1000;
+            font-size: 0.9em;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header-block {
+                font-size: 1.5em;
+                min-height: 60px;
+            }
+
+            .description-block {
+                font-size: 1em;
+            }
+
+            .page-title {
+                font-size: 1.4em;
+                padding: 12px 20px;
+            }
+
+            .character-block h3 {
+                font-size: 1.1em;
+            }
+
+            .character-block p {
+                font-size: 0.9em;
+            }
+
+            .character-image {
+                width: 70px;
+                height: 70px;
+            }
+
+            .character-image.left ~ p,
+            .character-image.left ~ h3 {
+                margin-left: 80px;
+            }
+
+            .character-image.right ~ p,
+            .character-image.right ~ h3 {
+                margin-right: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .character-image {
+                width: 50px;
+                height: 50px;
+            }
+
+            .character-image.left ~ p,
+            .character-image.left ~ h3 {
+                margin-left: 60px;
+            }
+
+            .character-image.right ~ p,
+            .character-image.right ~ h3 {
+                margin-right: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="book-container">
+        <!-- Обложка -->
+        <div class="page" id="page1" data-page="1">
+            <div class="page-front"></div>
+        </div>
+
+        <!-- Страница 1 -->
+        <div class="page" id="page2" data-page="2">
+            <div class="page-front">
+                <div class="content">
+                    <div class="info-block header-block">Заголовок</div>
+                    <div class="info-block description-block">описание сюжета...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Страница 2 -->
+        <div class="page" id="page3" data-page="3">
+            <div class="page-front"></div>
+        </div>
+
+        <!-- Страница 3 -->
+        <div class="page" id="page4" data-page="4">
+            <div class="page-front">
+                <div class="content">
+                    <div class="page-title">Представление</div>
+                    <div class="character-block">
+                        <h3>Персонаж 1</h3>
+                        <p>описание...</p>
+                    </div>
+                    <div class="character-block">
+                        <h3>Персонаж 2</h3>
+                        <p>описание...</p>
+                    </div>
+                    <div class="character-block">
+                        <h3>Персонаж 3</h3>
+                        <p>описание...</p>
+                    </div>
+                    <div class="character-block">
+                        <h3>Персонаж 4</h3>
+                        <p>описание...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Страница 4 -->
+        <div class="page" id="page5" data-page="5">
+            <div class="page-front">
+                <div class="content">
+                    <div class="page-title">Наследники</div>
+                    
+                    <div class="character-block">
+                        <h3>Эшлин Чарминг</h3>
+                        <img src="images/esshlin.png" alt="Эшлин" class="character-image left">
+                        <p>Дочь Золушки и Первого Прекрасного Принца Генри Чарминга</p>
+                    </div>
+                    
+                    <div class="character-block">
+                        <h3>Фэйбэлль Даркфейри</h3>
+                        <img src="images/fay.png" alt="Фэйбэлль" class="character-image right">
+                        <p>Дочь Тёмной феи Малифисенты</p>
+                    </div>
+                    
+                    <div class="character-block">
+                        <h3>Алистер Кингсли</h3>
+                        <img src="images/alister.png" alt="Алистер" class="character-image right">
+                        <p>Сын Алисы Кингсли из Страны Чудес</p>
+                    </div>
+                    
+                    <div class="character-block">
+                        <h3>Хельдвиг Вёльсунг Драгонбейн</h3>
+                        <img src="images/final.jpg" alt="Хельдвиг" class="character-image right">
+                        <p>Дочь Короля Зигфрида Вёльсунг Драгонбейна и Королевы Кримхильды фон Бургунд Голдвейвер. Песнь о Нибелунгах</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-hint">Нажмите чтобы перевернуть страницу</div>
+
+    <script>
+        const pages = document.querySelectorAll('.page');
+        let currentPage = 1;
+        const totalPages = pages.length;
+
+        pages.forEach((page, index) => {
+            page.addEventListener('click', () => {
+                const pageNum = parseInt(page.dataset.page);
+                
+                if (pageNum === currentPage && currentPage < totalPages) {
+                    // Листаем вперёд
+                    page.classList.add('flipped');
+                    currentPage++;
+                } else if (pageNum === currentPage - 1 && currentPage > 1) {
+                    // Листаем назад
+                    page.classList.remove('flipped');
+                    currentPage--;
+                }
+            });
+        });
+
+        // Поддержка клавиш навигации
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' && currentPage < totalPages) {
+                pages[currentPage - 1].classList.add('flipped');
+                currentPage++;
+            } else if (e.key === 'ArrowLeft' && currentPage > 1) {
+                currentPage--;
+                pages[currentPage - 1].classList.remove('flipped');
+            }
+        });
+    </script>
+</body>
+</html>
