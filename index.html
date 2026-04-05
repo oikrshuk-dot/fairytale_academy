@@ -143,21 +143,24 @@
             font-size: 1.3em;
             margin-bottom: 10px;
             color: #333;
+            position: relative;
+            z-index: 2;
         }
 
         .character-block p {
             font-size: 1em;
             line-height: 1.5;
             color: #555;
+            position: relative;
+            z-index: 2;
         }
 
         .character-image {
             position: absolute;
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            width: 140px;
+            height: auto;
+            object-fit: contain;
+            z-index: 1;
         }
 
         .character-image.left {
@@ -170,6 +173,16 @@
             right: 10px;
             top: 50%;
             transform: translateY(-50%);
+        }
+
+        .character-image.left ~ p,
+        .character-image.left ~ h3 {
+            margin-left: 150px;
+        }
+
+        .character-image.right ~ p,
+        .character-image.right ~ h3 {
+            margin-right: 150px;
         }
 
         /* Страница 4 */
@@ -216,8 +229,23 @@
             }
 
             .character-image {
+                width: 100px;
+            }
+
+            .character-image.left ~ p,
+            .character-image.left ~ h3 {
+                margin-left: 110px;
+            }
+
+            .character-image.right ~ p,
+            .character-image.right ~ h3 {
+                margin-right: 110px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .character-image {
                 width: 70px;
-                height: 70px;
             }
 
             .character-image.left ~ p,
@@ -228,23 +256,6 @@
             .character-image.right ~ p,
             .character-image.right ~ h3 {
                 margin-right: 80px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .character-image {
-                width: 50px;
-                height: 50px;
-            }
-
-            .character-image.left ~ p,
-            .character-image.left ~ h3 {
-                margin-left: 60px;
-            }
-
-            .character-image.right ~ p,
-            .character-image.right ~ h3 {
-                margin-right: 60px;
             }
         }
     </style>
@@ -304,26 +315,26 @@
                     
                     <div class="character-block">
                         <h3>Эшлин Чарминг</h3>
-                        <img src="images/esshlin.png" alt="Эшлин" class="character-image left">
                         <p>Дочь Золушки и Первого Прекрасного Принца Генри Чарминга</p>
+                        <img src="images/esshlin.png" alt="Эшлин" class="character-image left">
                     </div>
                     
                     <div class="character-block">
                         <h3>Фэйбэлль Даркфейри</h3>
-                        <img src="images/fay.png" alt="Фэйбэлль" class="character-image right">
                         <p>Дочь Тёмной феи Малифисенты</p>
+                        <img src="images/fay.png" alt="Фэйбэлль" class="character-image right">
                     </div>
                     
                     <div class="character-block">
                         <h3>Алистер Кингсли</h3>
-                        <img src="images/alister.png" alt="Алистер" class="character-image right">
                         <p>Сын Алисы Кингсли из Страны Чудес</p>
+                        <img src="images/alister.png" alt="Алистер" class="character-image right">
                     </div>
                     
                     <div class="character-block">
                         <h3>Хельдвиг Вёльсунг Драгонбейн</h3>
-                        <img src="images/final.jpg" alt="Хельдвиг" class="character-image right">
                         <p>Дочь Короля Зигфрида Вёльсунг Драгонбейна и Королевы Кримхильды фон Бургунд Голдвейвер. Песнь о Нибелунгах</p>
+                        <img src="images/darling.png" alt="Хельдвиг" class="character-image right">
                     </div>
                 </div>
             </div>
